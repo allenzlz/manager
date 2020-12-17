@@ -91,7 +91,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .tokenRepository(persistentTokenRepository())//设置持久化token
                 .tokenValiditySeconds(24 * 60 * 60); //记住登录1天(24小时 * 60分钟 * 60秒)
 
-        http.headers().frameOptions().sameOrigin();// 同源跨域
+        http.headers().frameOptions().sameOrigin();// 同源跨域，解决iframe不显示的问题
 
         //关闭csrf跨域攻击防御
         http.csrf().disable();
