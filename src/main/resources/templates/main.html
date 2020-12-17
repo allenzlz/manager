@@ -53,10 +53,8 @@
                 <li class="layui-nav-item layui-nav-itemed" th:if="${sysmenu.pid eq -1}" th:each="sysmenu,sm:${sysMenuList}">
                     <a class="" href="javascript:;">[[${sysmenu.name}]]</a>
                     <dl class="layui-nav-child">
-                        <dd>
-                            <a th:if="${sysmenu.id eq menuChild.pid}"
-                               th:each="menuChild,sm1:${sysMenuList}" id="aaa1" th:sdf="${menuChild.url}"
-                               href="javascript:;">[[${menuChild.name}]]</a>
+                        <dd th:if="${menuChild.pid ne -1 && sysmenu.id eq menuChild.pid}" th:each="menuChild,sm1:${sysMenuList}">
+                            <a th:id="${menuChild.id}" th:sdf="${menuChild.url}" href="javascript:;">[[${menuChild.name}]]</a>
                         </dd>
                     </dl>
                 </li>
