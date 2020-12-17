@@ -138,7 +138,7 @@
                 shade: 0.6,//遮罩透明度
                 maxmin: true, //允许全屏最小化
                 anim: 2,//0-6的动画形式，-1不开启
-                content: 'addMenu/id=' + obj.data.id,
+                content: 'addMenu/id/' + obj.data.id,
                 success: function (layero, index) {
                     var iframe = layero.find('iframe').contents().find('#menuIframe');
                     iframe.find('[name="name"]').val(obj.data.name);
