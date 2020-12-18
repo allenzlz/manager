@@ -1,7 +1,7 @@
 package com.nb.manager.sys.service;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.nb.manager.sys.entity.SysMenu;
 import com.nb.manager.sys.entity.SysUser;
 import com.nb.manager.sys.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +44,42 @@ public class UserService implements UserDetailsService {
             list = userMapper.getRolesByUsername(username);
         }
         return list;
+    }
+
+    public int count() {
+        int count = 0;
+        try {
+            count = userMapper.selectCount(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return count;
+        }
+    }
+
+    public List<SysUser> list() {
+        List<SysUser> list = null;
+        try {
+            list = userMapper.selectList(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return list;
+        }
+    }
+
+    public int save(SysUser sysUser) {
+        int result = 0;
+        try {
+            if (null != sysUser) {
+                //log.debug(sysUser.toString());
+                result = userMapper.insert(sysUser);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return result;
+        }
     }
 
 }

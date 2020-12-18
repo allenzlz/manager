@@ -1,10 +1,17 @@
 package com.nb.manager.sys.controller;
 
+import com.nb.manager.core.entity.AiResult;
+import com.nb.manager.sys.entity.SysMenu;
+import com.nb.manager.sys.entity.SysUser;
+import com.nb.manager.sys.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @Author OZY
@@ -16,6 +23,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/")
 public class UserController {
 
+
+    @Autowired
+    private UserService userService;
     /**
      * 登录页面跳转
      * @return
@@ -69,5 +79,39 @@ public class UserController {
         return "menu3";
     }
 
+    /**
+     * 用户管理页面跳转
+     * @return
+     */
+    @RequestMapping("/system/usermgr")
+    @ResponseBody
+    public ModelAndView usermgr() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("system/usermgr");
+        return mav;
+    }
 
+    /**
+     * 添加用户页面跳转
+     * @return
+     */
+    @RequestMapping("/system/addUser")
+    @ResponseBody
+    public ModelAndView addUser() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("system/addUser");
+        return mav;
+    }
+
+    @RequestMapping("/system/getUserList")
+    @ResponseBody
+    public AiResult<List<SysUser>> getUserList() {
+        System.out.println(new AiResult<>(0, "succ", userService.list(), userService.count()));
+        return new AiResult<>(0, "succ", userService.list(), userService.count());}
+
+    @RequestMapping("/system/addSysUser")
+    @ResponseBody
+    public int add(@RequestBody SysUser sysUser) {
+        return userService.save(sysUser);
+    }
 }
