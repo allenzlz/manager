@@ -1,0 +1,24 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+}
+
+.height100 {
+    height: 100%;
+}
+
+.fenggexian {
+    border-right: 1px solid #8D8D8D;
+    padding-right: 20px;
+}
+
+.pleft {
+    padding-top: 20px;
+}
+
+.save_bth_pr {
+    padding-right: 20px;
+}
