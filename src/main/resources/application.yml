@@ -6,8 +6,8 @@ spring:
     static-path-pattern: /static/**
 
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/mgrgo?useUnicode=true&characterEncoding=UTF8&useSSL=false&autoReconnect=true&allowPublicKeyRetrieval=true
-    username: root
+    url: jdbc:mysql://172.16.2.198:33070/mgrgo?useUnicode=true&characterEncoding=UTF8&useSSL=false&autoReconnect=true&allowPublicKeyRetrieval=true
+    username: allenmanager
     password: allen123
     driver-class-name: com.mysql.cj.jdbc.Driver
   devtools:
