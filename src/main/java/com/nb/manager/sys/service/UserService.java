@@ -1,6 +1,8 @@
 package com.nb.manager.sys.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.nb.manager.sys.entity.SysMenu;
 import com.nb.manager.sys.entity.SysUser;
 import com.nb.manager.sys.mapper.UserMapper;
@@ -68,13 +70,63 @@ public class UserService implements UserDetailsService {
         }
     }
 
+    public List<SysUser> selectUserList() {
+        List<SysUser> list = null;
+        try {
+            list = userMapper.selectUserList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return list;
+        }
+    }
+
+    public IPage<SysUser> selectUserList(Page page) {
+        IPage<SysUser> list = null;
+        try {
+            list = userMapper.selectPage(page,null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return list;
+        }
+    }
+
     public int save(SysUser sysUser) {
         int result = 0;
         try {
             if (null != sysUser) {
                 //log.debug(sysUser.toString());
-                result = userMapper.insert(sysUser);
+                result = userMapper.insertSysUser(sysUser);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return result;
+        }
+    }
+
+    public int update(SysUser sysUser) {
+        int result = 0;
+        try {
+            if (null != sysUser) {
+                //log.debug(sysUser.toString());
+                result = userMapper.updateById(sysUser);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return result;
+        }
+    }
+
+    public int delById(int id) {
+        int result = 0;
+        try {
+            result = userMapper.deleteById(id);
+            QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("id", id);
+            userMapper.delete(queryWrapper);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

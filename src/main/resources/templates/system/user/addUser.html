@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<form class="layui-form" lay-filter="menuIframe" id="menuIframe">
+<form class="layui-form" lay-filter="userIframe" id="userIframe">
     <div style="padding:20px 100px">
         <div class="layui-form-item">
             <label class="layui-form-label">用户姓名</label>
@@ -16,19 +16,19 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">用户登录账号</label>
+            <label class="layui-form-label">账号</label>
             <div class="layui-input-block">
                 <input type="text" name="loginName" lay-verify="required" autocomplete="off" placeholder="请输入用户姓名" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">用户登录密码</label>
+            <label class="layui-form-label">密码</label>
             <div class="layui-input-block">
                 <input type="password" name="password" lay-verify="required" autocomplete="new-password" placeholder="请输入用户登录密码" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">确认用户登录密码</label>
+            <label class="layui-form-label">确认密码</label>
             <div class="layui-input-block">
                 <input type="password" name="repassword" lay-verify="required" autocomplete="off" placeholder="请输入用户登录密码" class="layui-input">
             </div>
@@ -78,17 +78,21 @@
                 </select>
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">用户职位</label>
+
+        <!--<div class="layui-form-item">
+            <label class="layui-form-label">用户角色</label>
             <div class="layui-input-block">
-                <select name="positionId" lay-verify="required" lay-filter="aihao">
-                    <option value="" selected>选择职位</option>
-                    <option value="0">普通</option>
-                    <option value="1">中级</option>
-                    <option value="2">高级</option>
+                <select id="userRole" name="userRoleAdd" lay-verify="required">
                 </select>
             </div>
+        </div>-->
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户角色</label>
+            <div id="userRole" name="userRole" class="layui-input-block">
+
+            </div>
         </div>
+
         <div class="layui-form-item">
             <label class="layui-form-label">城市</label>
             <div class="layui-input-block">
@@ -116,12 +120,10 @@
             </div>
         </div>
     </div>
-
-
 </form>
 <script src="/static/js/public/layui/layui.all.js"></script>
 <script>
-    var allen = 1;
+    var $ = layui.jquery;
     layui.config({
         base: '/'
     }).use(['layer', 'form'], function () {
@@ -131,6 +133,20 @@
         var router = layui.router();
 
         form.on('submit(addUser)', function (data) {
+            //获取checkbox数据
+            quotation = new Array();
+            $("input:checkbox[name='userRole']:checked").each(function(){
+                quotation.push($(this).val());
+            });
+            var json ="";
+            for (var i = 0; i < quotation.length; i++) {
+                if(json==""){
+                    json +=quotation[i];
+                }else{
+                    json +=","+quotation[i];
+                }
+            }
+            data.field.userRole=json;
             var articleFrom = data.field;
             $.ajax({
                 url: '/system/addSysUser',
@@ -138,21 +154,75 @@
                 contentType: 'application/json',
                 data: JSON.stringify(articleFrom),
                 dataType: 'json',
-                success: function (res) {
+                success: function (data) {
+                    alert('添加成功');
                     window.parent.location.reload();
                 },
-                error: function (res) {
+                error: function (data) {
                     alert('添加失败');
                 },
                 end: function () {
                     alert(123);
                 }
             });
-            var index = parent.layer.getFrameIndex(window.name);//先得到当前iframe层的索引
-            parent.layer.close(index); //再执行关闭
+            //var index = parent.layer.getFrameIndex(window.name);//先得到当前iframe层的索引
+            //parent.layer.close(index); //再执行关闭
             return false;
         });
 
+
+    });
+
+    /*function handel(){
+        var htmls = '<option value="" selected>选择角色</option>'; //全局变量
+        $.ajax({
+            url: '/system/role/load',
+            type: "get",
+            dataType : "json",
+            contentType : "application/json",
+            async: false,//这得注意是同步
+            success: function (result) {
+                console.log(result.data);
+                for(var x in result.data){
+                    htmls += '<option value = "' + result.data[x].id + '">' + result.data[x].roleName + '</option>'
+                }
+                console.log(htmls);
+                $("#userRole").html(htmls);
+            }
+        });
+
+    }
+    handel();
+
+    layui.use(['layer', 'form'], function(){
+        var layer = layui.layer,form = layui.form;
+        form.render('select');
+    });*/
+
+    function handel(){
+        var htmls = ''; //全局变量
+        $.ajax({
+            url: '/system/role/load',
+            type: "get",
+            dataType : "json",
+            contentType : "application/json",
+            async: false,//这得注意是同步
+            success: function (result) {
+                console.log(result.data);
+                for(var x in result.data){
+                    htmls += '<input type="checkbox" name="userRole" value='+ result.data[x].id +' title=' + result.data[x].roleName + '>'
+                }
+                console.log(htmls);
+                $("#userRole").html(htmls);
+            }
+        });
+
+    }
+    handel();
+
+    layui.use(['layer', 'form'], function(){
+        var layer = layui.layer,form = layui.form;
+        form.render('checkbox');
     });
 </script>
 </body>

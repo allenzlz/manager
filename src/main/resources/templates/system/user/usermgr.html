@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="page-wrapper">
-    <table id="userTb"></table>
+    <table id="userTb"  lay-filter="userTb"></table>
 </div>
 <script type="text/html" id="userToolbar">
     <div class="layui-btn-container" style="display: inline-block;">
@@ -46,7 +46,7 @@
             elem: '#userTb',
             eight: 312,
             toolbar: '#userToolbar',
-            url: '/system/getUserList' //数据接口,page: true //开启分页
+            url: '/system/getUserList' //数据接口,
             ,cols: [
                 [ //表头
                     {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'},
@@ -63,8 +63,19 @@
                     },
                     {field: 'phoneNumber', title: '用户电话'},
                     {field: 'email', title: '用户邮箱'},
-                    {field: 'birthday', title: '用户生日'},
-                    {field: 'departmentId', title: '用户部门'},
+                    {field: 'userRoleName', title: '用户角色'},
+                    {field: 'departmentId', title: '用户部门',
+                        templet: function(res) {  //用户状态 1,正常 2,禁用 3,删除 4,过期
+                            if(res.departmentId == '0') {
+                                return '开发部';
+                            } else if (res.departmentId == '1'){
+                                return '运维部';
+                            } else if (res.departmentId == '2'){
+                                return '知识部';
+                            }else {
+                                return '其他';
+                            }
+                        }},
                     {field: 'state', title: '用户状态',
                         templet: function(res) {  //用户状态 1,正常 2,禁用 3,删除 4,过期
                             if(res.state == '1') {
@@ -81,7 +92,10 @@
                     {align: 'center', toolbar: '#tbBar', title: '操作', width: 280}
                 ]
             ]
+            ,page: true //开启分页
         });
+
+
 
         $('#btnAdd').click(function () {
             openIframe();
@@ -91,7 +105,7 @@
             layer.open({
                 type: 2, //Page层类型
                 area: ['60%', '80%'],
-                title: '添加菜单',
+                title: '新增用户',
                 shade: 0.6,//遮罩透明度
                 maxmin: true, //允许全屏最小化
                 anim: 2,//0-6的动画形式，-1不开启
@@ -104,19 +118,73 @@
                 }
             });
         }
+
+
+        function delById(obj, rowId) {
+            var rowId = obj.data.id;
+            $.ajax({
+                url: '/system/delUser/' + rowId,
+                type: 'DELETE',
+                success: function (res) {
+                    if (1 == res) {
+                        layer.msg('删除成功');
+                        obj.del();
+                    } else {
+                        layer.msg('删除失败');
+                    }
+                }
+            });
+        }
+
+        //更新
+        function updateById(obj) {
+            console.log(obj);
+            layer.open({
+                type: 2, //Page层类型
+                area: ['60%', '80%'],
+                title: '修改用户信息',
+                shade: 0.6,//遮罩透明度
+                maxmin: true, //允许全屏最小化
+                anim: 2,//0-6的动画形式，-1不开启
+                content: '/system/editUser/',
+                success: function (layero, index) {
+                    var iframe = layero.find('iframe').contents().find('#userIframe');
+                    iframe.find('[name="id"]').val(obj.data.id);
+                    iframe.find('[name="realName"]').val(obj.data.realName);
+                    iframe.find('[name="loginName"]').val(obj.data.loginName);
+                    iframe.find('[name="password"]').val(obj.data.password);
+                    console.log("sex:"+obj.data.sex);
+                    iframe.find('[name="sex"]').val(obj.data.sex);
+                    iframe.find('[name="portrait"]').val(obj.data.portrait);
+                    iframe.find('[name="phoneNumber"]').val(obj.data.phoneNumber);
+                    iframe.find('[name="email"]').val(obj.data.email);
+                    iframe.find('[name="birthday"]').val(obj.data.birthday.slice(0,10));
+                    iframe.find('[name="departmentId"]').val(obj.data.departmentId);
+                    var m = obj.data.userRole.split(",");
+                    for(let index in m){
+                        iframe.find(':checkbox[name="userRole"][value=' + m[index] + ']').attr('checked', 'true');
+                    }
+                    iframe.find('[name="city"]').val(obj.data.city);
+                    iframe.find('[name="state"]').val(obj.data.state);
+                    var iframeWindow = layero.find('iframe')[0].contentWindow;
+                    iframeWindow.layui.form.render();
+                }
+            });
+        }
+
+        // 工具列点击事件
+        table.on('tool(userTb)', function (obj) {
+            var event = obj.event;
+            if (event == 'del') {
+                delById(obj);
+            } else if (event == 'edit') {
+                updateById(obj);
+            } else if (event == 'add') {
+                openIframe(obj.data.id);
+            }
+        });
     });
 
-    // 工具列点击事件
-    /*userToolbar.on('tool(userTb)', function (obj) {
-        var event = obj.event;
-        if (event == 'del') {
-            delById(obj);
-        } else if (event == 'edit') {
-            updateById(obj);
-        } else if (event == 'add') {
-            openIframe(obj.data.id);
-        }
-    });*/
 
 
 </script>

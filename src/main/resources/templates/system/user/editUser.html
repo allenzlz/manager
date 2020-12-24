@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>修改用户</title>
+    <link rel="stylesheet" href="/static/js/public/layui/css/layui.css">
+</head>
+<body>
+
+<form class="layui-form" lay-filter="userIframe" id="userIframe">
+    <div style="padding:20px 100px">
+
+        <div class="layui-form-item" style="display: none">
+            <label class="layui-form-label">用户ID</label>
+            <div class="layui-input-block">
+                <input id="id" type="text" name="id" autocomplete="off" placeholder="" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户姓名</label>
+            <div class="layui-input-block">
+                <input type="text" name="realName" lay-verify="required" autocomplete="off" placeholder="请输入用户姓名" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">账号</label>
+            <div class="layui-input-block">
+                <input type="text" name="loginName" lay-verify="required" autocomplete="off" placeholder="请输入用户姓名" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-block">
+                <input type="password" name="password" lay-verify="required" autocomplete="new-password" placeholder="请输入用户登录密码" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">确认密码</label>
+            <div class="layui-input-block">
+                <input type="password" name="repassword" lay-verify="required" autocomplete="off" placeholder="请输入用户登录密码" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户性别</label>
+            <div class="layui-input-block">
+                <select name="sex" lay-verify="required" lay-filter="aihao">
+                    <option value="" selected>选择性别</option>
+                    <option value="0">女</option>
+                    <option value="1">男</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户头像</label>
+            <div class="layui-input-block">
+                <input type="text" name="portrait" lay-verify="required" autocomplete="off" placeholder="用户头像" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户电话</label>
+            <div class="layui-input-block">
+                <input type="text" name="phoneNumber" lay-verify="phone" autocomplete="off" placeholder="用户电话" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户邮箱</label>
+            <div class="layui-input-block">
+                <input type="text" name="email" lay-verify="email" autocomplete="off" placeholder="用户邮箱" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户生日</label>
+            <div class="layui-input-block">
+                <input type="date" name="birthday" autocomplete="off"  class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户部门</label>
+            <div class="layui-input-block">
+                <select name="departmentId" lay-verify="required" lay-filter="aihao">
+                    <option value="" selected>选择部门</option>
+                    <option value="0">开发部</option>
+                    <option value="1">运维部</option>
+                    <option value="2">知识部</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户角色</label>
+            <div id="userRole" name="userRole" class="layui-input-block">
+
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">城市</label>
+            <div class="layui-input-block">
+                <input type="text" name="city" autocomplete="off" placeholder="请输入城市" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户状态</label>
+            <div class="layui-input-block">
+                <select name="state" lay-verify="required" lay-filter="aihao">
+                    <option value="" selected>选择状态</option>
+                    <option value="1">正常</option>
+                    <option value="2">禁用</option>
+                    <option value="3">删除</option>
+                    <option value="4">过期</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div style="text-align: center;padding-right: 110px;" class="layui-input-block">
+                <button type="submit" class="layui-btn" lay-submit="" lay-filter="addUser">保存</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </div>
+</form>
+<script src="/static/js/public/layui/layui.all.js"></script>
+<script>
+    var $ = layui.jquery;
+    layui.config({
+        base: '/'
+    }).use(['layer', 'form'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        var router = layui.router();
+
+        form.on('submit(addUser)', function (data) {
+            //获取checkbox数据
+            quotation = new Array();
+            $("input:checkbox[name='userRole']:checked").each(function(){
+                quotation.push($(this).val());
+            });
+            var json ="";
+            for (var i = 0; i < quotation.length; i++) {
+                if(json==""){
+                    json +=quotation[i];
+                }else{
+                    json +=","+quotation[i];
+                }
+            }
+            data.field.userRole=json;
+            var articleFrom = data.field;
+            $.ajax({
+                url: '/system/editSysUser',
+                method: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify(articleFrom),
+                dataType: 'json',
+                success: function (data) {
+                    alert('修改成功');
+                    window.parent.location.reload();
+                },
+                error: function (data) {
+                    alert('修改失败');
+                },
+                end: function () {
+                    alert(123);
+                }
+            });
+            //var index = parent.layer.getFrameIndex(window.name);//先得到当前iframe层的索引
+            //parent.layer.close(index); //再执行关闭
+            return false;
+        });
+
+
+
+
+    });
+
+
+    function handel(){
+        var htmls = ''; //全局变量
+        $.ajax({
+            url: '/system/role/load',
+            type: "get",
+            dataType : "json",
+            contentType : "application/json",
+            async: false,//这得注意是同步
+            success: function (result) {
+                console.log(result.data);
+                for(var x in result.data){
+                    htmls += '<input type="checkbox" name="userRole" value='+ result.data[x].id +' title=' + result.data[x].roleName + '>'
+                }
+                console.log(htmls);
+                $("#userRole").html(htmls);
+            }
+        });
+
+    }
+    handel();
+
+    layui.use(['layer', 'form'], function(){
+        var layer = layui.layer,form = layui.form;
+        form.render('checkbox');
+    });
+</script>
+</body>
+</html>

@@ -18,7 +18,7 @@ import java.util.Date;
 @Accessors(chain = true)
 @TableName("sys_user")
 public class SysUser implements UserDetails {
-    private String id;
+    private int id;
     private String realName;
     private String loginName;
     private String password;
@@ -31,7 +31,7 @@ public class SysUser implements UserDetails {
     private String positionId;//职位id
     private String postId;//岗位id
     private String city;//城市
-    private int state;//用户状态
+    private int state;//用户状态 1,正常 2,禁用 3,删除 4,过期
     private int loginCount;//登录次数
     private String loginIp;//登录ip
     private String loginTime;//最近一次登录时间
@@ -40,9 +40,16 @@ public class SysUser implements UserDetails {
     private String editorId;//更新此用户信息的人的id
     private Date updateTime;//更新用户信息时间
     private String remark;//备注，暂时无用
+    @TableField(exist = false)
+    private String userRole;//用户角色id
+    @TableField(exist = false)
+    private String userRoleName;//用户角色名称
 
     @TableField(exist = false)
     private Collection<? extends GrantedAuthority> authorities;
+
+    public SysUser() {
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -81,5 +88,29 @@ public class SysUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return false;
+    }
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getUserRoleName() {
+        return userRoleName;
+    }
+
+    public void setUserRoleName(String userRoleName) {
+        this.userRoleName = userRoleName;
     }
 }
