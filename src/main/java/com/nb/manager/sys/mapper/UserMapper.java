@@ -34,7 +34,13 @@ public interface UserMapper extends BaseMapper<SysUser> {
             "where su.ID = sur.USER_ID\n" +
             "and sr.ID = sur.ROLE_ID\n" +
             "group by su.ID")
-    public List<SysUser> selectUserList();
+    public List<SysUser> selectUserList(Page page);
 
-    IPage<SysUser> selectPageVo(Page<?> page, Integer state);
+    @Select("select su.*,GROUP_CONCAT(sr.ID) user_role,GROUP_CONCAT(sr.ROLE_NAME) user_role_name from sys_user su,sys_role sr,sys_user_role sur\n" +
+            "where su.ID = sur.USER_ID\n" +
+            "and sr.ID = sur.ROLE_ID\n" +
+            "and su.REAL_NAME = #{userName}\n" +
+            "group by su.ID")
+    public List<SysUser> selectUserListByUserName(Page page,String userName);
+
 }

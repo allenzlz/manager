@@ -11,17 +11,17 @@
     <table id="userTb"  lay-filter="userTb"></table>
 </div>
 <script type="text/html" id="userToolbar">
+    <input class="layui-input" id="edtSearch" value="" placeholder="输入关键字"
+           style="display: inline-block;width: 140px;height: 30px;line-height: 30px;margin-right: 10px;"/>
     <div class="layui-btn-container" style="display: inline-block;">
+        <button id="btnSearch" class="layui-btn layui-btn-sm layui-btn-primary">
+            <i class="layui-icon">&#xe615;</i>搜索
         <button id="btnAdd" class="layui-btn layui-btn-sm layui-btn-primary" lay-event="refresh">
             <i class="layui-icon">&#xe61f;</i>新增
         </button>
         <button id="btnRefresh" class="layui-btn layui-btn-sm layui-btn-primary">
             <i class="layui-icon">&#xe669;</i>刷新
         </button>
-        <input class="layui-input" id="edtSearch" value="" placeholder="输入关键字"
-               style="display: inline-block;width: 140px;height: 30px;line-height: 30px;margin-right: 10px;vertical-align: top;"/>
-        <button id="btnSearch" class="layui-btn layui-btn-sm layui-btn-primary" style="vertical-align: top;">
-            <i class="layui-icon">&#xe615;</i>搜索
         </button>
     </div>
 </script>
@@ -42,7 +42,7 @@
         var table = layui.table;
         var $ = layui.jquery;
         //第一个实例
-        table.render({
+       var tb = table.render({
             elem: '#userTb',
             eight: 312,
             toolbar: '#userToolbar',
@@ -96,11 +96,35 @@
         });
 
 
-
-        $('#btnAdd').click(function () {
-            openIframe();
+        // 搜索
+        $('#btnSearch').click(function () {
+            var keywords = $('#edtSearch').val();
+            table.reload('userTb', {
+                url: '/system/selectUserListByUserName'
+                // ,methods:"post"
+                ,request: {
+                    pageName: 'page' //页码的参数名称，默认：page
+                    ,limitName: 'limit' //每页数据量的参数名，默认：limit
+                }
+                ,where: {
+                    userName : keywords
+                },
+                done: function(res, curr, count){
+                    bindTableToolbarFunction()
+                }
+                ,page: {
+                    curr: 1
+                }
+            });
         });
-
+        function bindTableToolbarFunction() {
+            $('#btnAdd').click(function () {
+                openIframe();
+            });
+            $('#btnRefresh').click(function () {
+                window.location.reload();
+            });
+        }
         function openIframe() {
             layer.open({
                 type: 2, //Page层类型

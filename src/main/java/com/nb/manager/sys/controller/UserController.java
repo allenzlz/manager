@@ -123,7 +123,14 @@ public class UserController {
     @ResponseBody
     public AiResult<List<SysUser>> getUserList(Integer page,Integer limit) {
         Page p = new Page(page,limit);
-        return new AiResult<>(0, "succ", userService.selectUserList(p).getRecords(), userService.count());
+        return new AiResult<>(0, "succ", userService.selectUserListPage(p), userService.count());
+    }
+
+    @RequestMapping("/system/selectUserListByUserName")
+    @ResponseBody
+    public AiResult<List<SysUser>> selectUserListByUserName(String userName,Integer page,Integer limit) {
+        Page p = new Page(page,limit);
+        return new AiResult<>(0, "succ", userService.selectUserListByUserName(p,userName), userService.count());
     }
 
     @RequestMapping("/system/addSysUser")

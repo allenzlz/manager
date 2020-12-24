@@ -70,10 +70,21 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public List<SysUser> selectUserList() {
+    public List<SysUser> selectUserListPage(Page page) {
         List<SysUser> list = null;
         try {
-            list = userMapper.selectUserList();
+            list = userMapper.selectUserList(page);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            return list;
+        }
+    }
+
+    public List<SysUser> selectUserListByUserName(Page page,String userName) {
+        List<SysUser> list = null;
+        try {
+            list = userMapper.selectUserListByUserName(page,userName);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
