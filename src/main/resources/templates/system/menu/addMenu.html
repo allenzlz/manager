@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>增加菜单</title>
+        <link rel="stylesheet" href="/static/js/public/layui/css/layui.css">
+    </head>
+    <body>
+
+        <form class="layui-form" lay-filter="menuIframe" id="menuIframe">
+            <div style="padding:20px 100px">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">菜单名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" lay-verify="required" autocomplete="off" placeholder="请输入菜单名称" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item" style="display: none">
+                    <label class="layui-form-label">菜单ID</label>
+                    <div class="layui-input-block">
+                        <input id="id" type="text" name="id" autocomplete="off" placeholder="" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item" style="display: none">
+                    <label class="layui-form-label">菜单PID</label>
+                    <div class="layui-input-block">
+                        <input id="pid" type="text" name="pid" autocomplete="off" placeholder="" class="layui-input" th:value="${pid}">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">菜单类型</label>
+                    <div class="layui-input-block">
+                        <select name="type" lay-verify="required" lay-filter="aihao">
+                            <option value="" selected>选择类型</option>
+                            <option value="0">菜单</option>
+                            <option value="1">按钮</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">菜单图标</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="icon" autocomplete="off" placeholder="菜单图标" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">菜单顺序</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="sort" lay-verify="number" autocomplete="off" placeholder="菜单顺序" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">菜单链接</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="url" autocomplete="off" placeholder="菜单链接" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">权限标识</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="permission" autocomplete="off" placeholder="权限标识" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">是否展示</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="isShow" value="0" title="展示" checked>
+                        <input type="radio" name="isShow" value="1" title="隐藏">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div style="text-align: center;padding-right: 110px;" class="layui-input-block">
+                        <button type="submit" class="layui-btn" lay-submit="" lay-filter="addMenu">保存</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </div>
+
+
+        </form>
+        <script src="/static/js/public/layui/layui.all.js"></script>
+        <script>
+            var allen = 1;
+            layui.config({
+                base: '/'
+            }).use(['layer', 'form'], function () {
+                var $ = layui.jquery;
+                var layer = layui.layer;
+                var form = layui.form;
+                var router = layui.router();
+
+                form.on('submit(addMenu)', function (data) {
+                    var articleFrom = data.field;
+                    $.ajax({
+                        url: '/system/menu/add',
+                        method: 'post',
+                        contentType: 'application/json',
+                        data: JSON.stringify(articleFrom),
+                        dataType: 'json',
+                        success: function (res) {
+                            window.parent.location.reload();
+                        },
+                        error: function (res) {
+                            alert('添加失败');
+                        },
+                        end: function () {
+                            alert(123);
+                        }
+                    });
+                    var index = parent.layer.getFrameIndex(window.name);//先得到当前iframe层的索引
+                    parent.layer.close(index); //再执行关闭
+                    return false;
+                });
+
+            });
+        </script>
+    </body>
+</html>

@@ -38,7 +38,7 @@
             <i class="layui-icon">&#xe66b;</i>折叠全部
         </button>
         <button id="btnAddRootNode" class="layui-btn layui-btn-sm layui-btn-primary">
-            <i class="layui-icon">&#xe66b;</i>新增跟节点
+            <i class="layui-icon">+</i>新增跟节点
         </button>
     </div>
 </script>
@@ -59,7 +59,7 @@
         // 渲染表格
         var insTb = treeTable.render({
             elem: '#demoTreeTb',
-            url: '/system/list',
+            url: '/system/menu/list',
             height: 'full',
             toolbar: '#tblToolbar',
             tree: {
@@ -105,7 +105,7 @@
         function checkExistById(rowId) {
             var retRes = 1;
             $.ajax({
-                url: '/system/check/id/' + rowId,
+                url: '/system/menu/check/id/' + rowId,
                 method: 'GET',
                 async: false,
                 success: function (res) {
@@ -187,7 +187,7 @@
 
         function delRow(obj, rowId) {
             $.ajax({
-                url: '/system/del/id/' + rowId,
+                url: '/system/menu/del/id/' + rowId,
                 type: 'DELETE',
                 success: function (res) {
                     if (1 == res) {
@@ -220,7 +220,6 @@
 
         //新增根节点
         $('#btnAddRootNode').click(function () {
-            $("#addMenuDiv").show();
             openIframe(-1);
         });
         // 全部折叠

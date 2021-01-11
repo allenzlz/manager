@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -13,11 +14,11 @@ import java.util.Date;
 @Data
 @Accessors(chain = true)
 @TableName("sys_role")
-public class SysRole implements GrantedAuthority {
-    private String id;
+public class SysRole implements GrantedAuthority, Serializable {
+    private int id;
     private String roleName;
     private Date createTime;
-    private String modifyTime;
+    private Date modifyTime;
     private int delFlag;
     private String remark;
 
