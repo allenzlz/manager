@@ -34,7 +34,7 @@ public class UserRoleService {
         }
     }
 
-    public int delById(int id) {
+    public int delById(String id) {
         int result = 0;
         try {
             result = userRoleMapper.deleteById(id);

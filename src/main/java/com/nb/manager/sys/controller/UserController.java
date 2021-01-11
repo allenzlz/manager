@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @Author OZY
@@ -134,6 +135,8 @@ public class UserController {
     public int addUser(@RequestBody SysUser sysUser) {
         String userRoleId = sysUser.getUserRole();
         String[] userRoleIds = userRoleId.split(",");
+        String id = UUID.randomUUID().toString().replaceAll("-","");
+        sysUser.setId(id);
         int r = userService.save(sysUser);
         for(String str : userRoleIds){
             SysUserRole sysUserRole = new SysUserRole();
@@ -164,7 +167,7 @@ public class UserController {
     @RequestMapping("/system/delUser/{id}/{name}")
     @ResponseBody
     @UserTrajectoryLog("删除用户")
-    public int delUser(@PathVariable("id") int id,@PathVariable("name") String name) {
+    public int delUser(@PathVariable("id") String id,@PathVariable("name") String name) {
         userRoleService.delById(id);
         return userService.delById(id);
     }

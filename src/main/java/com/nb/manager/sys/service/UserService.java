@@ -131,7 +131,7 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public int delById(int id) {
+    public int delById(String id) {
         int result = 0;
         try {
             result = userMapper.deleteById(id);
