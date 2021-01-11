@@ -1,6 +1,5 @@
 package com.nb.manager.sys.controller;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.nb.manager.core.entity.AiResult;
 import com.nb.manager.sys.entity.SysUser;
@@ -8,6 +7,7 @@ import com.nb.manager.sys.entity.SysUserRole;
 import com.nb.manager.sys.service.RoleService;
 import com.nb.manager.sys.service.UserRoleService;
 import com.nb.manager.sys.service.UserService;
+import com.nb.manager.sys.service.UserTrajectoryLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author OZY
@@ -95,6 +94,7 @@ public class UserController {
      */
     @RequestMapping("/system/usermgr")
     @ResponseBody
+    @UserTrajectoryLog("用户管理页面跳转")
     public ModelAndView usermgr() {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("system/user/usermgr");
@@ -107,17 +107,12 @@ public class UserController {
      */
     @RequestMapping("/system/addUser")
     @ResponseBody
-    public ModelAndView addUser() {
+    public ModelAndView addUserView() {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("system/user/addUser");
         return mav;
     }
 
-    /*@RequestMapping("/system/getUserList")
-    @ResponseBody
-    public AiResult<List<SysUser>> getUserList() {
-        System.out.println(new AiResult<>(0, "succ", userService.selectUserList(), userService.count()));
-        return new AiResult<>(0, "succ", userService.selectUserList(), userService.count());}*/
 
     @RequestMapping("/system/getUserList")
     @ResponseBody
@@ -135,7 +130,8 @@ public class UserController {
 
     @RequestMapping("/system/addSysUser")
     @ResponseBody
-    public int add(@RequestBody SysUser sysUser) {
+    @UserTrajectoryLog("添加用户")
+    public int addUser(@RequestBody SysUser sysUser) {
         String userRoleId = sysUser.getUserRole();
         String[] userRoleIds = userRoleId.split(",");
         int r = userService.save(sysUser);
@@ -150,7 +146,8 @@ public class UserController {
 
     @RequestMapping("/system/editSysUser")
     @ResponseBody
-    public int edit(@RequestBody SysUser sysUser) {
+    @UserTrajectoryLog("修改用户")
+    public int editUser(@RequestBody SysUser sysUser) {
         String userRoleId = sysUser.getUserRole();
         String[] userRoleIds = userRoleId.split(",");
         int r = userService.update(sysUser);
@@ -164,9 +161,10 @@ public class UserController {
         return r;
     }
 
-    @RequestMapping("/system/delUser/{id}")
+    @RequestMapping("/system/delUser/{id}/{name}")
     @ResponseBody
-    public int checkExistById(@PathVariable("id") int id) {
+    @UserTrajectoryLog("删除用户")
+    public int delUser(@PathVariable("id") int id,@PathVariable("name") String name) {
         userRoleService.delById(id);
         return userService.delById(id);
     }

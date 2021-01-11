@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>用户管理页面</title>
+    <title>用户操作日志查看页面</title>
     <link rel="stylesheet" href="/static/js/public/layui/css/layui.css">
     <link rel="stylesheet" href="/static/css/system/menu.css">
 </head>
@@ -16,9 +16,6 @@
     <div class="layui-btn-container" style="display: inline-block;">
         <button id="btnSearch" class="layui-btn layui-btn-sm layui-btn-primary">
             <i class="layui-icon">&#xe615;</i>搜索
-        <button id="btnAdd" class="layui-btn layui-btn-sm layui-btn-primary" lay-event="refresh">
-            <i class="layui-icon">&#xe61f;</i>新增
-        </button>
         <button id="btnRefresh" class="layui-btn layui-btn-sm layui-btn-primary">
             <i class="layui-icon">&#xe669;</i>刷新
         </button>
@@ -118,101 +115,12 @@
             });
         });
         function bindTableToolbarFunction() {
-            $('#btnAdd').click(function () {
-                openIframe();
-            });
             $('#btnRefresh').click(function () {
                 window.location.reload();
             });
         }
-        $('#btnAdd').click(function () {
-            openIframe();
-        });
         $('#btnRefresh').click(function () {
             window.location.reload();
-        });
-        function openIframe() {
-            layer.open({
-                type: 2, //Page层类型
-                area: ['60%', '80%'],
-                title: '新增用户',
-                shade: 0.6,//遮罩透明度
-                maxmin: true, //允许全屏最小化
-                anim: 2,//0-6的动画形式，-1不开启
-                content: '/system/addUser',
-                cancel: function (index, layero) {
-                    if (confirm('确定要关闭么')) { //只有当点击confirm框的确定时，该层才会关闭
-                        layer.close(index)
-                    }
-                    return false;
-                }
-            });
-        }
-
-
-        function delById(obj, rowId) {
-            var rowId = obj.data.id;
-            var name = obj.data.realName;
-            $.ajax({
-                url: '/system/delUser/' + rowId+'/'+name,
-                type: 'DELETE',
-                success: function (res) {
-                    if (1 == res) {
-                        layer.msg('删除成功');
-                        obj.del();
-                    } else {
-                        layer.msg('删除失败');
-                    }
-                }
-            });
-        }
-
-        //更新
-        function updateById(obj) {
-            console.log(obj);
-            layer.open({
-                type: 2, //Page层类型
-                area: ['60%', '80%'],
-                title: '修改用户信息',
-                shade: 0.6,//遮罩透明度
-                maxmin: true, //允许全屏最小化
-                anim: 2,//0-6的动画形式，-1不开启
-                content: '/system/editUser/',
-                success: function (layero, index) {
-                    var iframe = layero.find('iframe').contents().find('#userIframe');
-                    iframe.find('[name="id"]').val(obj.data.id);
-                    iframe.find('[name="realName"]').val(obj.data.realName);
-                    iframe.find('[name="loginName"]').val(obj.data.loginName);
-                    iframe.find('[name="password"]').val(obj.data.password);
-                    console.log("sex:"+obj.data.sex);
-                    iframe.find('[name="sex"]').val(obj.data.sex);
-                    iframe.find('[name="portrait"]').val(obj.data.portrait);
-                    iframe.find('[name="phoneNumber"]').val(obj.data.phoneNumber);
-                    iframe.find('[name="email"]').val(obj.data.email);
-                    iframe.find('[name="birthday"]').val(obj.data.birthday.slice(0,10));
-                    iframe.find('[name="departmentId"]').val(obj.data.departmentId);
-                    var m = obj.data.userRole.split(",");
-                    for(let index in m){
-                        iframe.find(':checkbox[name="userRole"][value=' + m[index] + ']').attr('checked', 'true');
-                    }
-                    iframe.find('[name="city"]').val(obj.data.city);
-                    iframe.find('[name="state"]').val(obj.data.state);
-                    var iframeWindow = layero.find('iframe')[0].contentWindow;
-                    iframeWindow.layui.form.render();
-                }
-            });
-        }
-
-        // 工具列点击事件
-        table.on('tool(userTb)', function (obj) {
-            var event = obj.event;
-            if (event == 'del') {
-                delById(obj);
-            } else if (event == 'edit') {
-                updateById(obj);
-            } else if (event == 'add') {
-                openIframe(obj.data.id);
-            }
         });
     });
 
