@@ -44,7 +44,7 @@ public class RoleController {
     }
 
     @RequestMapping("del/id/{id}")
-    public int delRole(@PathVariable("id") int id) {
+    public int delRole(@PathVariable("id") String id) {
         return roleService.delRole(id);
     }
 

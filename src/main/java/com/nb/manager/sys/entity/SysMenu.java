@@ -14,8 +14,8 @@ import java.util.Date;
 @Accessors(chain = true)
 @TableName("sys_menu")
 public class SysMenu implements Serializable {
-    private String id;
-    private String pid;//父节点Id
+    private int id;
+    private int pid;//父节点Id
     private String name;
     private int type;//菜单类型
     private String icon;

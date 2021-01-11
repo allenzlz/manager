@@ -33,7 +33,7 @@ public class RoleService {
         return roleMapper.insert(sysRole);
     }
 
-    public int delRole(int id) {
+    public int delRole(String id) {
         SysRole sysRole = new SysRole();
         sysRole.setId(id);
         sysRole.setDelFlag(0);
