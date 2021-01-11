@@ -18,7 +18,7 @@ import java.util.Date;
 @Accessors(chain = true)
 @TableName("sys_user")
 public class SysUser implements UserDetails {
-    private int id;
+    private String id;
     private String realName;
     private String loginName;
     private String password;
@@ -98,11 +98,11 @@ public class SysUser implements UserDetails {
         this.userRole = userRole;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
