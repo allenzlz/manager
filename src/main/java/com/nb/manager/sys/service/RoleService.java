@@ -49,10 +49,15 @@ public class RoleService {
     public int userRole(String jsonData) {
         JSONObject jsonObject = JSONObject.parseObject(jsonData);
         JSONArray tree = jsonObject.getJSONArray("tree");
+        String roleId = jsonObject.getString("id");
         for (int i = 0; i < tree.size(); i++) {
             JSONObject jsonObject1 = tree.getJSONObject(i);
             String id = jsonObject1.getString("id");
-            jsonObject1.getJSONArray("");
+
+            JSONArray children = jsonObject1.getJSONArray("children");
+            if (null != children && children.size() > 0) {
+                userRole(children.toJSONString());//递归
+            }
         }
         return 1;
     }

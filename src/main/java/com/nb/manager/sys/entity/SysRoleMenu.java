@@ -12,5 +12,5 @@ import lombok.experimental.Accessors;
 @TableName("sys_role_menu")
 public class SysRoleMenu {
     private String roleId;
-    private int menuId;
+    private String menuId;
 }

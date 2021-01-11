@@ -15,7 +15,7 @@ import java.util.Date;
 @Accessors(chain = true)
 @TableName("sys_role")
 public class SysRole implements GrantedAuthority, Serializable {
-    private int id;
+    private String id;
     private String roleName;
     private Date createTime;
     private Date modifyTime;
