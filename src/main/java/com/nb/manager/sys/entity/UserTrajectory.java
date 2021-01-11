@@ -15,8 +15,8 @@ import java.util.Date;
 @Accessors(chain = true)
 @TableName("user_trajectory")
 public class UserTrajectory {
-    //用户名
-    private String userName;
+    //用户id
+    private int userId;
     //操作类型
     private String operationModule;
     //操作内容
@@ -24,12 +24,12 @@ public class UserTrajectory {
     //操作时间
     private Timestamp operationDate;
 
-    public String getUserName() {
-        return userName;
+    public int userId() {
+        return userId;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getOperationModule() {

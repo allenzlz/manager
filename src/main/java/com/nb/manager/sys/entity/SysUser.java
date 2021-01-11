@@ -113,4 +113,8 @@ public class SysUser implements UserDetails {
     public void setUserRoleName(String userRoleName) {
         this.userRoleName = userRoleName;
     }
+
+    public String getRealName() {
+        return realName;
+    }
 }

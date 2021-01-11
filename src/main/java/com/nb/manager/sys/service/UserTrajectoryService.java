@@ -1,19 +1,9 @@
 package com.nb.manager.sys.service;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.nb.manager.sys.entity.SysUser;
 import com.nb.manager.sys.entity.UserTrajectory;
-import com.nb.manager.sys.mapper.UserMapper;
 import com.nb.manager.sys.mapper.UserTrajectoryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
