@@ -113,6 +113,8 @@
             </div>
         </div>
 
+        <pre id="demo1-value"></pre>
+
         <div class="layui-form-item">
             <div style="text-align: center;padding-right: 110px;" class="layui-input-block">
                 <button type="submit" class="layui-btn" lay-submit="" lay-filter="addUser">保存</button>
@@ -122,8 +124,42 @@
     </div>
 </form>
 <script src="/static/js/public/layui/layui.all.js"></script>
+<script src="/static/js/public/layui/xm-select.js"></script>
 <script>
     var $ = layui.jquery;
+    var demo2 = xmSelect.render({
+        el: '#userRole',
+        toolbar: {show: true},
+        data: []
+    })
+
+    var htmls = ''; //全局变量
+    $.ajax({
+        url: '/system/role/load',
+        type: "get",
+        dataType : "json",
+        contentType : "application/json",
+        async: false,//这得注意是同步
+        success: function (result) {
+            console.log(result.data);
+            var cons = new Array();
+            for(var x in result.data){
+                //htmls += '{name: ' + result.data[x].roleName + ', value: '+ result.data[x].id +' },'
+                var con = {};
+                con["value"] =result.data[x].id;
+                con["name"] = result.data[x].roleName;
+                cons[x] = con;
+            }
+            var a = JSON.stringify(cons);
+            console.log(a);
+            demo2.update({
+                data:cons,
+                autoRow: true,
+            })
+        }
+    });
+
+
     layui.config({
         base: '/'
     }).use(['layer', 'form'], function () {
@@ -131,19 +167,15 @@
         var layer = layui.layer;
         var form = layui.form;
         var router = layui.router();
-
         form.on('submit(addUser)', function (data) {
             //获取checkbox数据
-            quotation = new Array();
-            $("input:checkbox[name='userRole']:checked").each(function(){
-                quotation.push($(this).val());
-            });
             var json ="";
-            for (var i = 0; i < quotation.length; i++) {
+            var selectArr = demo2.getValue();
+            for(var i in selectArr){
                 if(json==""){
-                    json +=quotation[i];
+                    json +=selectArr[i].value;
                 }else{
-                    json +=","+quotation[i];
+                    json +=","+selectArr[i].value;
                 }
             }
             data.field.userRole=json;
@@ -199,7 +231,7 @@
         form.render('select');
     });*/
 
-    function handel(){
+   /* function handel(){
         var htmls = ''; //全局变量
         $.ajax({
             url: '/system/role/load',
@@ -223,7 +255,7 @@
     layui.use(['layer', 'form'], function(){
         var layer = layui.layer,form = layui.form;
         form.render('checkbox');
-    });
+    });*/
 </script>
 </body>
 </html>
