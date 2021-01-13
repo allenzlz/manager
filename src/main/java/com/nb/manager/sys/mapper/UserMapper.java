@@ -22,10 +22,10 @@ public interface UserMapper extends BaseMapper<SysUser> {
             "                (select id from SYS_USER where LOGIN_NAME = #{userId}))))")
     public List<String> getRolesByUsername(String username);
 
-    @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
-    @Insert("insert  into sys_user (REAL_NAME,LOGIN_NAME,PASSWORD,SEX,PORTRAIT,PHONE_NUMBER,EMAIL,BIRTHDAY," +
+    //@Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
+    @Insert("insert  into sys_user (ID,REAL_NAME,LOGIN_NAME,PASSWORD,SEX,PORTRAIT,PHONE_NUMBER,EMAIL,BIRTHDAY," +
             "DEPARTMENT_ID,POSITION_ID,POST_ID,CITY,STATE,LOGIN_COUNT,LOGIN_IP,LOGIN_TIME," +
-            "CREATOR_ID,CREATE_TIME,EDITOR_ID,UPDATE_TIME,REMARK) values (#{realName},#{loginName},#{password},#{sex}" +
+            "CREATOR_ID,CREATE_TIME,EDITOR_ID,UPDATE_TIME,REMARK) values (#{id},#{realName},#{loginName},#{password},#{sex}" +
             ",#{portrait},#{phoneNumber},#{email},#{birthday},#{departmentId},#{positionId},#{postId},#{city},#{state}," +
             "#{loginCount},#{loginIp},#{loginTime},#{creatorId},#{createTime},#{editorId},#{updateTime},#{remark})")
     int insertSysUser(SysUser sysUser);

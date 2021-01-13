@@ -117,4 +117,8 @@ public class SysUser implements UserDetails {
     public String getRealName() {
         return realName;
     }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }

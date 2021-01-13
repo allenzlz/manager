@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -105,6 +106,9 @@ public class UserService implements UserDetailsService {
 
     public int save(SysUser sysUser) {
         int result = 0;
+        BCryptPasswordEncoder bcryptPasswordEncoder = new BCryptPasswordEncoder();
+        String hashPass = bcryptPasswordEncoder.encode(sysUser.getPassword());
+        sysUser.setPassword(hashPass);
         try {
             if (null != sysUser) {
                 //log.debug(sysUser.toString());
