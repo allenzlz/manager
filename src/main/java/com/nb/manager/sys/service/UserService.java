@@ -123,6 +123,9 @@ public class UserService implements UserDetailsService {
 
     public int update(SysUser sysUser) {
         int result = 0;
+        BCryptPasswordEncoder bcryptPasswordEncoder = new BCryptPasswordEncoder();
+        String hashPass = bcryptPasswordEncoder.encode(sysUser.getPassword());
+        sysUser.setPassword(hashPass);
         try {
             if (null != sysUser) {
                 //log.debug(sysUser.toString());
