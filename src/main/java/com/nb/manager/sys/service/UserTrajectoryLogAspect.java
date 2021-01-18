@@ -19,7 +19,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
- * 定义切面
+ * 用户轨迹业务类
  * zhangqiang
  */
 @Aspect
